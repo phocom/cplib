@@ -6,7 +6,7 @@ using namespace std;
 
 数え上げに頻出のnCr,nPr,nHrを提供します。
 テンプレート引数で法を指定します。
-math.build(int n)でnを引数の最大値として前処理します。
+コンストラクタで前処理を行います。
 
 END_DOCUMENT */
 
@@ -15,10 +15,10 @@ END_DOCUMENT */
 template <int MOD = 1000000007>
 struct Math {
   vector<long long> fact, factinv, inv;
-  void build(int n) {
-    fact.resize(n);
-    factinv.resize(n);
-    inv.resize(n);
+  Math(int n = 100000) {
+    fact.resize(n + 1);
+    factinv.resize(n + 1);
+    inv.resize(n + 1);
     fact[0] = fact[1] = 1;
     factinv[0] = factinv[1] = 1;
     inv[1] = 1;
@@ -48,8 +48,7 @@ struct Math {
 // -------- END_CODE --------
 
 int main() {
-  Math<1000000007> math;
-  math.build(100000);
+  Math<1000000007> math(100000);
   cout << math.P(5, 2) << endl;
   cout << math.C(7, 3) << endl;
   cout << math.H(4, 3) << endl;
