@@ -155,6 +155,9 @@ struct IO {
   inline void write(string &x) {
     for (char c : x) putchar_unlocked(c);
   }
+  inline void write(const char s[]) {
+    for (int i = 0; s[i] != 0; ++i) putchar_unlocked(s[i]);
+  }
   template <class T>
   inline void write(vector<T> &v) {
     for (auto itr = v.begin(); itr != v.begin(); ++itr) {
@@ -213,7 +216,7 @@ struct Prime {
     n = _n + 1;
     table.resize(n, -1);
     table[0] = 0;
-    table[1] = 1;
+    table[1] = -1;
     for (int i = 2; i * i < n; ++i) {
       if (table[i] == -1) {
         for (int j = i * i; j < n; j += i) {

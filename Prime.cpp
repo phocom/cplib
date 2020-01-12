@@ -21,7 +21,7 @@ struct Prime {
     n = _n + 1;
     table.resize(n, -1);
     table[0] = 0;
-    table[1] = 1;
+    table[1] = -1;
     for (int i = 2; i * i < n; ++i) {
       if (table[i] == -1) {
         for (int j = i * i; j < n; j += i) {

@@ -10,7 +10,7 @@ io.read(xx, yy, ...);で入力します。
 整数型、string、vector<T>に対応しています。
 
 io.write(xx, yy,...);で出力します。
-整数型、string、vector<T>に対応しています。
+整数型、string、const char[],vector<T>に対応しています。
 
 io.set_delimiter(charc)でcを区切り文字に設定します。
 複数の引数を指定した場合とvectorの出力で用いられます。
@@ -49,7 +49,7 @@ struct IO {
     char c;
     do {
       c = getchar_unlocked();
-    } while (c != ' ' && c != '\n';);
+    } while (c != ' ' && c != '\n');
     x.clear();
     do {
       x += c;
@@ -85,6 +85,9 @@ struct IO {
   }
   inline void write(string &x) {
     for (char c : x) putchar_unlocked(c);
+  }
+  inline void write(const char s[]) {
+    for (int i = 0; s[i] != 0; ++i) putchar_unlocked(s[i]);
   }
   template <class T>
   inline void write(vector<T> &v) {
