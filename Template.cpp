@@ -100,7 +100,7 @@ struct IO {
     char c;
     do {
       c = getchar_unlocked();
-    } while (c != '-' && c < '0' && '9' < c);
+    } while (c != '-' && (c < '0' || '9' < c));
     bool minus = 0;
     if (c == '-') {
       minus = 1;
@@ -118,7 +118,7 @@ struct IO {
     char c;
     do {
       c = getchar_unlocked();
-    } while (c != ' ' && c != '\n');
+    } while (c == ' ' || c == '\n');
     x.clear();
     do {
       x += c;
