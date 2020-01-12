@@ -47,11 +47,14 @@ struct IO {
   }
   inline void read(string &x) {
     char c;
-    x.clear();
     do {
       c = getchar_unlocked();
+    } while (c != ' ' && c != '\n';);
+    x.clear();
+    do {
       x += c;
-    } while (c != ' ' && c != '\n');
+      c = getchar_unlocked();
+    } while (c != ' ' && c != '\n' && c != EOF);
   }
   template <class T>
   inline void read(vector<T> &v) {
