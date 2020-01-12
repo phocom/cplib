@@ -36,14 +36,30 @@ struct Prime {
       if (table[i] == -1) primes.push_back(i);
     }
   }
-  vector<pair<int, int>> prime_factor(int x) {
-    map<int, int> mp;
-    while (table[x] != -1) {
-      mp[table[x]]++;
-      x /= table[x];
+  vector<pair<long long, int>> prime_factor(long long x) {
+    map<long long, int> mp;
+    long long div = 2;
+    int p = 0;
+    while (n <= x && div * div <= x) {
+      if (x % div == 0) {
+        mp[div]++;
+        x /= div;
+      } else {
+        if (p + 1 < primes.size()) {
+          div = primes[++p];
+        } else {
+          div++;
+        }
+      }
+    }
+    if (x < n) {
+      while (table[x] != -1) {
+        mp[table[x]]++;
+        x /= table[x];
+      }
     }
     if (x > 1) mp[x]++;
-    vector<pair<int, int>> ret;
+    vector<pair<long long, int>> ret;
     for (auto p : mp) ret.push_back(p);
     return ret;
   }
@@ -56,7 +72,7 @@ int main() {
   prime.enumerate_primes();
   for (auto x : prime.primes) cout << x << " ";
   cout << endl;
-  auto ret = prime.prime_factor(84);
+  auto ret = prime.prime_factor(120000);
   for (auto p : ret) cout << "{" << p.first << "," << p.second << "} ";
   cout << endl;
   return 0;
