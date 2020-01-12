@@ -66,31 +66,30 @@ struct IO {
     read(tail...);
   }
   template <class T>
-  inline void write(T &x) {
+  inline void write(T x) {
     char buf[32];
     int p = 0;
-    T t = x;
-    if (t < 0) {
-      x = -t;
+    if (x < 0) {
+      x = -x;
       putchar_unlocked('-');
     }
-    if (t == 0) putchar_unlocked('0');
-    while (t > 0) {
-      buf[p++] = (t % 10) + '0';
-      t /= 10;
+    if (x == 0) putchar_unlocked('0');
+    while (x > 0) {
+      buf[p++] = (x % 10) + '0';
+      x /= 10;
     }
     while (p) {
       putchar_unlocked(buf[--p]);
     }
   }
-  inline void write(string &x) {
+  inline void write(string x) {
     for (char c : x) putchar_unlocked(c);
   }
   inline void write(const char s[]) {
     for (int i = 0; s[i] != 0; ++i) putchar_unlocked(s[i]);
   }
   template <class T>
-  inline void write(vector<T> &v) {
+  inline void write(vector<T> v) {
     for (auto itr = v.begin(); itr != v.begin(); ++itr) {
       write(separator);
       write(*itr);
@@ -98,7 +97,7 @@ struct IO {
     write(*v.end());
   }
   template <class Head, class... Tail>
-  inline void write(Head &head, Tail &... tail) {
+  inline void write(Head head, Tail... tail) {
     write(head);
     write(separator);
     write(tail...);
