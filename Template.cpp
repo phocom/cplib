@@ -43,36 +43,36 @@ template <class S>
 string to_string(set<S> s) {
   if (s.empty()) return "{}";
   string ret = "{";
-  for (auto itr = s.begin(); itr != s.end(); ++itr)
-    ret += to_string(*itr) + ",";
-  ret += to_string(*s.end()) + "}";
+  for (auto itr = s.begin(); ++itr != s.end(); ++itr)
+    ret += to_string(*--itr) + ",";
+  ret += to_string(*--s.end()) + "}";
   return ret;
 }
 template <class S, class T>
 string to_string(unordered_map<S, T> m) {
   if (m.empty()) return "{}";
   string ret = "{";
-  for (auto itr = m.begin(); itr != m.end(); ++itr)
-    ret += to_string(*itr) + ",";
-  ret += to_string(*m.end()) + "}";
+  for (auto itr = m.begin(); ++itr != m.end(); ++itr)
+    ret += to_string(*--itr) + ",";
+  ret += to_string(*--m.end()) + "}";
   return ret;
 }
 template <class S, class T>
 string to_string(map<S, T> m) {
   if (m.empty()) return "{}";
   string ret = "{";
-  for (auto itr = m.begin(); itr != m.end(); ++itr)
-    ret += to_string(*itr) + ",";
-  ret += to_string(*m.end()) + "}";
+  for (auto itr = m.begin(); ++itr != m.end(); ++itr)
+    ret += to_string(*--itr) + ",";
+  ret += to_string(*--m.end()) + "}";
   return ret;
 }
 template <class T>
 string to_string(vector<T> v) {
   if (v.empty()) return "{}";
   string ret = "{";
-  for (auto itr = v.begin(); itr != v.end(); ++itr)
-    ret += to_string(*itr) + ",";
-  ret += to_string(*v.end()) + "}";
+  for (auto itr = v.begin(); ++itr != v.end(); ++itr)
+    ret += to_string(*--itr) + ",";
+  ret += to_string(*--v.end()) + "}";
   return ret;
 }
 
@@ -159,11 +159,11 @@ struct IO {
   }
   template <class T>
   inline void write(vector<T> v) {
-    for (auto itr = v.begin(); itr != v.begin(); ++itr) {
-      write(separator);
+    for (auto itr = v.begin(); itr + 1 != v.end(); ++itr) {
       write(*itr);
+      write(separator);
     }
-    write(*v.end());
+    write(v.back());
   }
   template <class Head, class... Tail>
   inline void write(Head head, Tail... tail) {
@@ -173,114 +173,5 @@ struct IO {
   }
   void set_separator(string s) { separator = s; }
 } io;
-
-template <int MOD = 1000000007>
-struct Math {
-  vector<long long> fact, factinv, inv;
-  Math(int n = 100000) {
-    fact.resize(n + 1);
-    factinv.resize(n + 1);
-    inv.resize(n + 1);
-    fact[0] = fact[1] = 1;
-    factinv[0] = factinv[1] = 1;
-    inv[1] = 1;
-    for (int i = 2; i <= n; ++i) {
-      fact[i] = fact[i - 1] * i % MOD;
-      inv[i] = MOD - inv[MOD % i] * (MOD / i) % MOD;
-      factinv[i] = factinv[i - 1] * inv[i] % MOD;
-    }
-  }
-  long long C(int n, int r) {
-    if (n < r || n < 0 || r < 0) {
-      return 0;
-    } else {
-      return fact[n] * (factinv[r] * factinv[n - r] % MOD) % MOD;
-    }
-  }
-  long long P(int n, int r) {
-    if (n < r || n < 0 || r < 0) {
-      return 0;
-    } else {
-      return fact[n] * factinv[n - r] % MOD;
-    }
-  }
-  long long H(int n, int r) { return C(n + r - 1, r); }
-};
-
-struct Prime {
-  int n;
-  vector<int> table;
-  vector<int> primes;
-  Prime(int _n = 100000) {
-    n = _n + 1;
-    table.resize(n, -1);
-    table[0] = 0;
-    table[1] = -1;
-    for (int i = 2; i * i < n; ++i) {
-      if (table[i] == -1) {
-        for (int j = i * i; j < n; j += i) {
-          table[j] = i;
-        }
-      }
-    }
-  }
-  void enumerate_primes() {
-    primes.clear();
-    for (int i = 2; i < n; ++i) {
-      if (table[i] == -1) primes.push_back(i);
-    }
-  }
-  vector<pair<long long, int>> prime_factor(long long x) {
-    map<long long, int> mp;
-    long long div = 2;
-    int p = 0;
-    while (n <= x && div * div <= x) {
-      if (x % div == 0) {
-        mp[div]++;
-        x /= div;
-      } else {
-        if (p + 1 < primes.size()) {
-          div = primes[++p];
-        } else {
-          div++;
-        }
-      }
-    }
-    if (x < n) {
-      while (table[x] != -1) {
-        mp[table[x]]++;
-        x /= table[x];
-      }
-    }
-    if (x > 1) mp[x]++;
-    vector<pair<long long, int>> ret;
-    for (auto p : mp) ret.push_back(p);
-    return ret;
-  }
-};
-
-struct UnionFind {
-  vector<int> data;
-  vector<vector<int>> groups;
-  UnionFind(int n) : data(n, -1) {}
-  int root(int v) { return data[v] < 0 ? v : data[v] = root(data[v]); }
-  bool unite(int u, int v) {
-    if ((u = root(u)) == (v = root(v))) {
-      return 1;
-    } else {
-      if (-data[u] < -data[v]) swap(u, v);
-      data[u] += data[v];
-      data[v] = u;
-      return 0;
-    }
-  }
-  int size(int v) { return -data[root(v)]; }
-  void make_groups() {
-    map<int, vector<int>> mp;
-    for (int i = 0; i < data.size(); ++i) mp[root(i)].push_back(i);
-    groups.clear();
-    for (auto p : mp) groups.push_back(p.second);
-  }
-};
 
 int main() { return 0; }

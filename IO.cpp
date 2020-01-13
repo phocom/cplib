@@ -90,11 +90,11 @@ struct IO {
   }
   template <class T>
   inline void write(vector<T> v) {
-    for (auto itr = v.begin(); itr != v.begin(); ++itr) {
-      write(separator);
+    for (auto itr = v.begin(); itr + 1 != v.end(); ++itr) {
       write(*itr);
+      write(separator);
     }
-    write(*v.end());
+    write(v.back());
   }
   template <class Head, class... Tail>
   inline void write(Head head, Tail... tail) {
