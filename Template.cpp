@@ -14,67 +14,26 @@ using ll = long long;
 using Pii = pair<int, int>;
 using Pll = pair<ll, ll>;
 
-string to_string(string s) { return s; }
 template <class T>
-string to_string(unordered_set<T> s);
-template <class T>
-string to_string(set<T> s);
+string to_string(T s);
 template <class S, class T>
-string to_string(unordered_map<S, T> m);
-template <class S, class T>
-string to_string(map<S, T> m);
-template <class T>
-string to_string(vector<T> v);
+string to_string(pair<S, T> p);
+string to_string(string s);
 
+template <class T>
+string to_string(T v) {
+  if (v.empty()) return "{}";
+  string ret = "{";
+  auto itr = v.begin(), next = ++v.begin();
+  for (; next != v.end(); ++itr, ++next) ret += to_string(*itr) + ",";
+  ret += to_string(*itr) + "}";
+  return ret;
+}
 template <class S, class T>
 string to_string(pair<S, T> p) {
   return "{" + to_string(p.first) + "," + to_string(p.second) + "}";
 }
-template <class S>
-string to_string(unordered_set<S> s) {
-  if (s.empty()) return "{}";
-  string ret = "{";
-  for (auto itr = s.begin(); itr != s.end(); ++itr)
-    ret += to_string(*itr) + ",";
-  ret += to_string(*s.end()) + "}";
-  return ret;
-}
-template <class S>
-string to_string(set<S> s) {
-  if (s.empty()) return "{}";
-  string ret = "{";
-  for (auto itr = s.begin(); ++itr != s.end(); ++itr)
-    ret += to_string(*--itr) + ",";
-  ret += to_string(*--s.end()) + "}";
-  return ret;
-}
-template <class S, class T>
-string to_string(unordered_map<S, T> m) {
-  if (m.empty()) return "{}";
-  string ret = "{";
-  for (auto itr = m.begin(); ++itr != m.end(); ++itr)
-    ret += to_string(*--itr) + ",";
-  ret += to_string(*--m.end()) + "}";
-  return ret;
-}
-template <class S, class T>
-string to_string(map<S, T> m) {
-  if (m.empty()) return "{}";
-  string ret = "{";
-  for (auto itr = m.begin(); ++itr != m.end(); ++itr)
-    ret += to_string(*--itr) + ",";
-  ret += to_string(*--m.end()) + "}";
-  return ret;
-}
-template <class T>
-string to_string(vector<T> v) {
-  if (v.empty()) return "{}";
-  string ret = "{";
-  for (auto itr = v.begin(); ++itr != v.end(); ++itr)
-    ret += to_string(*--itr) + ",";
-  ret += to_string(*--v.end()) + "}";
-  return ret;
-}
+string to_string(string s) { return s; }
 
 void debug() { cerr << endl; }
 template <class Head, class... Tail>
