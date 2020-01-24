@@ -18,34 +18,27 @@ template <class T>
 string to_string(T s);
 template <class S, class T>
 string to_string(pair<S, T> p);
-string to_string(string s);
+string to_string(string s) { return s; }
+string to_string(const char s[]) { return to_string(string(s)); }
 
 template <class T>
 string to_string(T v) {
   if (v.empty()) return "{}";
   string ret = "{";
-  auto itr = v.begin(), next = ++v.begin();
-  for (; next != v.end(); ++itr, ++next) ret += to_string(*itr) + ",";
-  ret += to_string(*itr) + "}";
+  for (auto x : v) ret += to_string(x) + ",";
+  ret.back() = '}';
   return ret;
 }
 template <class S, class T>
 string to_string(pair<S, T> p) {
   return "{" + to_string(p.first) + "," + to_string(p.second) + "}";
 }
-string to_string(string s) { return s; }
 
 void debug() { cerr << endl; }
 template <class Head, class... Tail>
 void debug(Head head, Tail... tail) {
   cerr << to_string(head) << " ";
   debug(tail...);
-}
-void print() { cout << endl; }
-template <class Head, class... Tail>
-void print(Head head, Tail... tail) {
-  cout << to_string(head) << " ";
-  print(tail...);
 }
 
 struct IO {
