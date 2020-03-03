@@ -123,6 +123,11 @@ struct IO {
     write(separator);
     write(tail...);
   }
+  template <class Head, class... Tail>
+  inline void writeln(Head head, Tail... tail) {
+    write(head, tail...);
+    write("\n");
+  }
   void set_separator(string s) { separator = s; }
 } io;
 
